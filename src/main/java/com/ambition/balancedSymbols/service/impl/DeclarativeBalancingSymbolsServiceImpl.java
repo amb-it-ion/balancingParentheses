@@ -2,59 +2,65 @@ package com.ambition.balancedSymbols.service.impl;
 
 import java.util.Set;
 import java.util.Stack;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
 import com.ambition.balancedSymbols.rule.api.IRule;
-import com.ambition.balancedSymbols.rule.api.IRuleResult;
 import com.ambition.balancedSymbols.service.api.IBalancingSymbolsService;
 
 @Component
-public class DeclarativeBalancingSymbolsServiceImpl implements IBalancingSymbolsService
-{
-	@Resource(name="rules")
+public class DeclarativeBalancingSymbolsServiceImpl implements
+		IBalancingSymbolsService {
+	@Resource(name = "rules")
 	public Set<IRule> rules;
-	
-	public boolean evaluate(String input) {
-		
+
+	public boolean evaluate(String input, boolean paralell) {
+
 		Stack<Character> stack = new Stack<Character>();
-		
-		// TODO check finished once in the beginning, not every run
-		for ( IRule rule : rules )
-		{ 
-			if ( !rule.getFinished() )
-				throw new IllegalStateException("Rule not defined completely.");
-		}
-		
+
+		// take copy
 		char[] inputToArray = input.toCharArray();
-		char lastChar;
+
+		char lastChar = '\u0000';
 		char currentChar;
-		
-		// TODO Global rule
-		if ( inputToArray.length > 0 )
-		{
-			// TODO test for opening character or refactor
+
+		if (inputToArray.length > 0) {
 			lastChar = inputToArray[0];
-			stack.push( lastChar );
-			
-			for (int inputToArrayIndex=1; inputToArrayIndex<inputToArray.length; inputToArrayIndex++ ) 
-			{
-				currentChar = inputToArray[ inputToArrayIndex ];
-				
-				for ( IRule rule : rules )
-				{
-					IRuleResult result = rule.satisfied( currentChar, lastChar, stack );
-					
-					if ( result.getFinished() && !result.getResult() )
-						return false;
-				}
-				
-				lastChar = currentChar;
-			}
+			stack.push(lastChar);
 		}
-		
+		int inputToArrayIndex = 1;
+
+		do {
+			Stream<IRule> rulesStream = rules.stream();
+
+			if (paralell)
+				rulesStream = rulesStream.parallel();
+			else
+				rulesStream = rulesStream.sequential();
+
+			try {
+				currentChar = inputToArray[inputToArrayIndex];
+			} catch (ArrayIndexOutOfBoundsException e) {
+				// special case: inputToArray.length == 0
+				currentChar = '\u0000';
+			}
+
+			final char lastCharFinal = lastChar;
+			final char currentCharFinal = currentChar;
+
+			if (rulesStream
+					.filter(rule -> !rule.satisfied(currentCharFinal,
+							lastCharFinal, stack)).findFirst().isPresent())
+				return false;
+
+			lastChar = currentChar;
+
+			inputToArrayIndex++;
+		} while (inputToArrayIndex < inputToArray.length);
+
 		return stack.empty();
 	}
 }

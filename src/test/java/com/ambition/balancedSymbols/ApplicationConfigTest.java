@@ -8,11 +8,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 
-import com.ambition.balancedSymbols.runner.impl.MultiThreadBalancingCommandLineRunnerImpl;
 import com.ambition.balancedSymbols.runner.impl.SingleThreadBalancingCommandLineRunnerImpl;
 
-@ComponentScan( excludeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MultiThreadBalancingCommandLineRunnerImpl.class), 
-								   @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = SingleThreadBalancingCommandLineRunnerImpl.class) }, 
+@ComponentScan( excludeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = SingleThreadBalancingCommandLineRunnerImpl.class) }, 
 			    basePackages = { "com.ambition.balancedSymbols" })
 @Configuration
 public class ApplicationConfigTest extends ApplicationConfig {

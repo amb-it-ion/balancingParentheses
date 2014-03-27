@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ambition.balancedSymbols.runner.api.IBalancingCommandLineRunner;
@@ -28,10 +27,10 @@ public class SingleThreadBalancingCommandLineRunnerImpl implements
 		String line;
 		int lineNumber = 0;
 		
-        while ( ( line = dataIn.readLine() ) != EXIT)
+        while ( !( line = dataIn.readLine() ).equals( EXIT ))
         {
         	System.out.println( new Integer( lineNumber++ ).toString() + ":" + 
-        			WordUtils.capitalize(new Boolean( balancingService.evaluate( line )).toString()));
+        			WordUtils.capitalize(new Boolean( balancingService.evaluate( line, true )).toString()));
         }
 	}
 }

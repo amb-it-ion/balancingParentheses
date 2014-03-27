@@ -10,7 +10,7 @@ import com.ambition.balancedSymbols.service.api.IBalancingSymbolsService;
 @Component
 public class ImperativeBalancingSymbolsServiceImpl implements IBalancingSymbolsService
 {
-	public boolean evaluate(String input) {
+	public boolean evaluate( String input, boolean paralell ) {
 		
 		Stack<Character> stack = new Stack<Character>();
 		char lastChar = '['; 

@@ -68,12 +68,12 @@ public class ApplicationConfig {
 		sequentialRuleImpl.add().after('}').may().directly('{');	// wrong task
 		
     	// An empty string is not valid expression!
-		globalRuleImpl.not("").must().once();
+		globalRuleImpl.not('\u0000');
+		
 		
 		rules.add( sequentialRuleImpl );
-		// TODO 
-		// rules.add( globalRuleImpl );
-	 
+		rules.add( globalRuleImpl );
+			 
     	return rules;
 	}
 }

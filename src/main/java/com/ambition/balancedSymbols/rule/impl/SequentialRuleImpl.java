@@ -1,16 +1,12 @@
 package com.ambition.balancedSymbols.rule.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.Stack;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.ambition.balancedSymbols.rule.api.IRule;
-import com.ambition.balancedSymbols.rule.api.IRuleResult;
 
 public class SequentialRuleImpl implements IRule, Comparable<SequentialRuleImpl>  {
 	
@@ -216,7 +212,7 @@ public class SequentialRuleImpl implements IRule, Comparable<SequentialRuleImpl>
 		
 	}
 
-	@Override
+	// TODO Use Builder instead
 	/**
 	 * sanity check for completeness of rule definition
 	 * 
@@ -256,11 +252,13 @@ public class SequentialRuleImpl implements IRule, Comparable<SequentialRuleImpl>
 	
 	// -------------------------- Evaluate -------------------------- //
 
-	IRuleResult result;
-	
-	public IRuleResult satisfied(char currentChar, char lastChar, Stack<Character> stack) {
+	public boolean satisfied(char currentChar, char lastChar, Stack<Character> stack) {
 		
 		boolean satisfiedSequence = false;
+		
+		// no related rules for this char found, all good
+		if ( !ruleMap.containsKey( currentChar ) )
+			return true;
 		
 		for ( SequentialRuleImpl rule : ruleMap.get( currentChar ))
 		{
@@ -281,24 +279,8 @@ public class SequentialRuleImpl implements IRule, Comparable<SequentialRuleImpl>
 					}
 					else
 					{
-						// TODO !rule.satisfyLaterOrdered
-						satisfiedSequence = true;
-						
-	//					int lastIndexOfNeededChar;
-	//					
-	//					for ( SequentialRuleImpl rule : ruleMap.get( currentChar ))
-	//					{
-	//						lastIndexOfNeededChar = stack.lastIndexOf( rule.pre );
-	//						
-	//						if ( lastIndexOfNeededChar != -1 )
-	//						{
-	//							stack.remove( lastIndexOfNeededChar );
-	//							
-	//							return new RuleResultImpl(null,true,false);
-	//						}
-	//						else	
-	//							return new RuleResultImpl(null,true,false);
-	//					}
+						if ( !stack.empty() && stack.remove( new Character( rule.pre )))
+							satisfiedSequence = true;
 					}
 				}
 				// lastChar
@@ -315,6 +297,6 @@ public class SequentialRuleImpl implements IRule, Comparable<SequentialRuleImpl>
 				break;
 		}
 		
-		return new RuleResultImpl(null,true,satisfiedSequence);
+		return satisfiedSequence;
 	}
 }
