@@ -1,5 +1,4 @@
 #balancingParentheses
-====================
 
 ## Puzzle
 In February 2014 I was given a coding puzzle. Stated was a set of rules detailing the balancing parenthesis problem: Given an expression string exp, write a program to examine whether the pairs and the orders of its brackets are correct in exp.
@@ -7,20 +6,20 @@ In February 2014 I was given a coding puzzle. Stated was a set of rules detailin
 ### Correctness
 here is defined as: 
 
-1 Brackets can be round "()", curly "{}" or squared "[]"
-2 Each type of bracket needs to be first opened then closed
-3 You can only close the last bracket that was opened
-4 Inside round brackets only curly brackets are allowed
-5 Inside curly brackets only square brackets are allowed
-6 Any bracket can appear (directly) inside square brackets
-7 You can use a list of brackets where a single one is allowed of that type!
-8 An empty string is not valid expression
+1. Brackets can be round "()", curly "{}" or squared "[]"
+2. Each type of bracket needs to be first opened then closed
+3. You can only close the last bracket that was opened
+4. Inside round brackets only curly brackets are allowed
+5. Inside curly brackets only square brackets are allowed
+6. Any bracket can appear (directly) inside square brackets
+7. You can use a list of brackets where a single one is allowed of that type!
+8. An empty string is not valid expression
 
 ### Quality attributes
 
-1 Clean code
-2 Reasonable design &
-3 Reasonable performance
+1. Clean code
+2. Reasonable design &
+3. Reasonable performance
 
 ### IO
 
@@ -32,7 +31,7 @@ here is defined as:
 For organisational reasons I have put my solution on github.com, so whoever is interested (most likely my possible employer) can take a look.
 
 ### Requirements
-I have started with Maven 2 Java 6/7, and finished with Maven 3 and Java 8 SDK, using the latest Eclipse Kepler build and a Java 8 beta extension. This will make parallelism both simple to read and fun to develop. Spring 4 is used for demonstration purpose and elegant mock testing. Spring Bootstrap adds a little annotational automagicion.
+I have started with Maven 2 Java 6/7, and finished with *Maven 3* and *Java 8 SE*, using the latest Eclipse Kepler build and a Java 8 beta extension. This will make parallelism both simple to read and fun to develop. Spring 4 is used for demonstration purpose and elegant mock testing. Spring Bootstrap adds a little annotational automagicion.
 
 ### Architectural Decisions
 
@@ -52,6 +51,8 @@ allows very easy adjustment to the rule basis using a nicely readable builder pa
 means that no rule is called on a symbol it's not interested in
 
 ### TODO
++ Sequential/Parallel Switch
++ Reduce to IRule.satisfied(char currentChar), remembering the last char and stack thread-safe within SequentialRuleOmpl itself
 + Code TODOs
 + Test coverage
 + API Comments coverage
