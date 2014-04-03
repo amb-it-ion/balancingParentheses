@@ -33,6 +33,9 @@ For organisational reasons I have put my solution on github.com, so whoever is i
 ### Requirements
 I have started with Maven 2 on Java 6/7, and finished with **Maven 3** on **Java 8 SE**, using the latest Eclipse Kepler build and a Java 8 beta extension. This will make parallelism both simple to read and fun to develop. Spring 4 is used for demonstration purpose and elegant mock testing. Spring Bootstrap adds a little annotational automagicion.
 
+### Usage
+Install the code with *mvn clean install*, run with *mvn exec:java*, adding an optional file with *< filename* or enter the code manually yourself on the shell. Exit the app with *exit*.
+
 ### Architectural Decisions
 
 I have followed the quality attributes:
@@ -51,6 +54,8 @@ allows very easy adjustment to the rule basis using a nicely readable builder pa
 means that no rule is called on a symbol it's not interested in
 
 ### TODO
++ Clean up POM
++ Read lines in separate [non-blocking thread](http://www.javaspecialists.eu/archive/Issue153.html), start each line in parallel
 + Sequential/Parallel Switch
 + Reduce to IRule.satisfied(char currentChar), remembering the last char and stack thread-safe within SequentialRuleOmpl itself
 + Code TODOs

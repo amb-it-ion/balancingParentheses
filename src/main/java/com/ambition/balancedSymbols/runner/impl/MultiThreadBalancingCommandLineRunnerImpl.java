@@ -11,11 +11,8 @@ import com.ambition.balancedSymbols.runner.api.IBalancingCommandLineRunner;
 import com.ambition.balancedSymbols.service.api.IBalancingSymbolsService;
 
 @Component
-public class SingleThreadBalancingCommandLineRunnerImpl implements
+public class MultiThreadBalancingCommandLineRunnerImpl implements
 		IBalancingCommandLineRunner {
-
-	// TODO move somewhere more global
-	public static final String EXIT = "exit";
 
 	@Resource(name="service")
 	IBalancingSymbolsService balancingService;
@@ -28,10 +25,10 @@ public class SingleThreadBalancingCommandLineRunnerImpl implements
 		String line;
 		int lineNumber = 0;
 		
-        while ( !( line = dataIn.readLine() ).equals( EXIT ))
+        while ( !( line = dataIn.readLine() ).equals( SingleThreadBalancingCommandLineRunnerImpl.EXIT ))
         {
         	System.out.println( new Integer( lineNumber++ ).toString() + ":" + 
-        			WordUtils.capitalize(new Boolean( balancingService.evaluate( line, false )).toString()));
+        			WordUtils.capitalize(new Boolean( balancingService.evaluate( line, true )).toString()));
         }
 	}
 }
